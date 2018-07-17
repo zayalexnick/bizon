@@ -106,7 +106,7 @@ class Garage extends Component {
 	}
 
 	diffImageChange() {
-		var tt = this.state.di
+		var tt = this.state.di;
 		if ( tt < 4) {
 			tt = tt + 1;
 		} else {
@@ -363,12 +363,7 @@ class Garage extends Component {
 
 	checkAuto(auto)
 	{
-		if (auto.vin === '')
-		{
-			Alert.alert('Ошибка', 'Заполните VIN или номер кузова');
-			return false;
-		}
-		else if (auto.vin.search(/[А-Яа-я]/) != -1)
+		if (auto.vin.search(/[А-Яа-я]/) != -1)
 		{
 			Alert.alert('VIN или номер кузова не может содержать русские буквы');
 			return false;
@@ -462,7 +457,8 @@ class Garage extends Component {
 
 
 		} else {
-			Alert.alert( 'Ошибка', 'автомобиль не создан' );
+		    console.log('JSON', json);
+			Alert.alert( 'Автомобиль не создан', json.message );
 		}
 
 
@@ -483,17 +479,20 @@ class Garage extends Component {
 		if (!this.checkAuto(auto)) return;
 
 		let createAutoUrl = 'http://auto-club42.ru/android/user.php?action=createauto&phpsessid=' + this.state.phpsessid
-			+ '&vin=' + this.state.vin
 			+ '&id_make=' + this.state.make_id
 			+ '&id_model=' + this.state.model_id
 			+ '&type_kuzov=' + this.state.type_kuzov
 			+ '&year_pr=' + this.state.year_pr
 			+ '&probeg=' + this.state.probeg;
+
+		if (this.state.vin != '' || this.state.vin != null)
+		    createAutoUrl += '&vin=' + this.state.vin;
+
 		console.log(createAutoUrl);
 		const response = await fetch(createAutoUrl);
 		const json = await response.json();
 		if (json.status === "success") {
-			this.updateLoginData().done()
+			this.updateLoginData().done();
 			this.setState({
 				screen:'garage',
 				vin: '',
@@ -511,7 +510,7 @@ class Garage extends Component {
 
 
 		} else {
-			Alert.alert( 'Ошибка', 'автомобиль не создан' );
+			Alert.alert( 'Автомобиль не создан', json.message);
 		}
 	}
 
@@ -542,6 +541,7 @@ class Garage extends Component {
 		const response = await fetch(checkUrl);
 		const json = await response.json();
 		if (json.status === "failed") {
+		    console.log('Vin', json.message);
 			if (json.message === "vin отстутствует") {
 				// 1 vin не найден продолжение
 				Alert.alert ('VIN', 'VIN не найден');
@@ -593,8 +593,15 @@ class Garage extends Component {
 		}
 	}
 
+	compare(a, b)
+    {
+        return a.name.localeCompare(b.name);
+    }
+
 
 	render() {
+	    console.log(this.state);
+	    //console.warn(this.state.make_item);
 		// if (this.state.screen === 'newAutoExt') {
 		// 	Alert.alert( 'Alert Title', 'vin не найден' );
 		// }
@@ -904,17 +911,17 @@ class Garage extends Component {
 						<View style={{ marginBottom:30, 
 													flexDirection: 'row', alignItems: 'center', 
 													borderWidth:1,borderColor:'black',
-													marginHorizontal:10
+													marginHorizontal:10,height: 50
 												}}>
 							{/*<Text style={{ flex: 2, fontSize:16, fontWeight: 'bold'}}>VIN или номер кузова: </Text>*/}
 
-	            <TextInput style={{flex: 3, height: 40, fontSize: 18,paddingHorizontal: 20}}
-	              value = {this.state.vin}
-	              onChangeText={vin => this.setState({ vin })}
-	              placeholder = 'VIN или номер кузова'
-	              underlineColorAndroid = 'transparent'
-	              placeholderTextColor = 'black'
-	            />
+                            <TextInput style={{flex: 3, fontSize: 18,paddingHorizontal: 20,}}
+                              value = {this.state.vin}
+                              onChangeText={vin => this.setState({ vin })}
+                              placeholder = 'VIN или номер кузова'
+                              underlineColorAndroid = 'transparent'
+                              placeholderTextColor = 'black'
+                            />
 						</View>
 
           <TouchableOpacity style={{marginHorizontal:15,marginBottom:20,marginVertical: 5,flexDirection:'row'  }}  onPress={() => this.setState({screen: 'newAutoExt'})}>
@@ -964,7 +971,7 @@ class Garage extends Component {
 	        </View>
 					<FlatList
 						style={styles.flatHeight}
-					  data={this.state.makes}
+					  data={this.state.makes.sort(this.compare)}
 						keyExtractor={this._keyExtractor}
 					  renderItem={({item}) =>
 						<Button style={{ paddingLeft:2,  marginBottom:3, backgroundColor: "#fff", alignSelf: "center",justifyContent:'center'}}  onPress={() => this.setState({screen:this.state.screenBack,make:item.name, make_id:item.id, make_item: item})}>
@@ -1043,7 +1050,7 @@ class Garage extends Component {
 				<View style={{marginBottom: 20 ,backgroundColor: 'lightgray'}}>
 					<Text style={{ textAlign: 'center'}}>Выберите модель</Text>
 				</View>
-
+                { console.log(this.state.make_item) }
 				<FlatList
 					style={styles.flatHeight}
 					data={this.state.make_item.models}
@@ -1097,16 +1104,20 @@ class Garage extends Component {
 
 		          </Item>*/}
 							<Text style={{marginTop: 20,marginLeft:10,fontSize:12}}>VIN или номер кузова</Text>
-							<View style={{ marginBottom:15, 
-													flexDirection: 'row', alignItems: 'center', 
-													borderWidth:1,borderColor:'black',
-													marginHorizontal:10
-												}}>
+							<View style={{
+								flexDirection: 'row',
+                                alignItems: 'center',
+								borderWidth:1,
+                                borderColor:'black',
+								marginHorizontal:10,
+                                marginBottom:30,
+                                height: 50
+							}}>
 
 
 								{/*<Text style={{ flex: 2, fontSize:16, fontWeight: 'bold'}}>VIN или номер кузова: </Text>*/}
 
-		            <TextInput style={{flex: 3, height: 40, fontSize: 18,paddingHorizontal:20}}
+		            <TextInput style={{flex: 3, fontSize: 18,paddingHorizontal:20}}
 		              value = {this.state.vin}
 		              onChangeText={vin => this.setState({ vin })}
 		              underlineColorAndroid= 'transparent'

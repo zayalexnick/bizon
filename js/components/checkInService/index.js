@@ -948,12 +948,7 @@ class CheckInService extends Component {
 
   priceBlock = (item) => {
 	  if (item.show_sale === 'YES') {
-          return (
-              <View style={{flex:5, alignItems: 'center', justifyContent: 'center'}}>
-                  <Text style={{flex:1,color:'green',textAlign:'center',fontSize:18,fontWeight: 'bold'}}>{item.price} руб.</Text>
-              </View>
-          );
-	    /*return (
+	    return (
         <View style={{flex:5, justifyContent: 'center'}}>
 			<View style={{ position: 'relative' }}>
 		  		<Text style={{flex:1,color:'red',textAlign:'center',fontSize:14,fontWeight: 'bold'}}>{item.price} руб.</Text>
@@ -962,7 +957,7 @@ class CheckInService extends Component {
 			<Text style={{flex:1,color:'green',textAlign:'center',fontSize:18,fontWeight: 'bold'}}>{item.sale_price} руб.</Text>
 			<Text style={{flex:1,color:'black',textAlign:'center',fontSize:12}}>скидка: {item.sale}%</Text>
         </View>
-      );*/
+      );
     }
     else {
       return (

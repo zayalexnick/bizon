@@ -101,7 +101,7 @@ android {
         applicationId "com.devextreme.BisonAC.Mobile"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 4000002
+        versionCode 4000005
         versionName "3.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"

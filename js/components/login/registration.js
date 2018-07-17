@@ -481,10 +481,10 @@ class Registration3 extends Component {
             var url_makes = "http://auto-club42.ru/android/user.php?action=makesmodels&phpsessid=" + responseJson.phpsessid;
             console.log(url_makes);
             fetch(url_makes).then((response) => response.json())
-            .then((responseJson) => {
+            .then(async (responseJson) => {
              if (responseJson.status === 'success') {
                console.log(responseJson);
-               AsyncStorage.setItem('makes', JSON.stringify(responseJson.makes), () => {
+               await AsyncStorage.setItem('makes', JSON.stringify(responseJson.makes), () => {
                });
 
              } else {

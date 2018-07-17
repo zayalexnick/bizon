@@ -49,8 +49,7 @@ class ChooseServices extends Component {
       if(this.state.selectedServices[i].price == 'нет цены') {
 
       } else {
-        //sum= sum + Number(this.state.selectedServices[i].show_sale === 'YES' ? this.state.selectedServices[i].sale_price : this.state.selectedServices[i].price);
-        sum = sum + Number(this.state.selectedServices[i].price);
+        sum= sum + Number(this.state.selectedServices[i].show_sale === 'YES' ? this.state.selectedServices[i].sale_price : this.state.selectedServices[i].price);
       };
 
     }
@@ -91,7 +90,7 @@ class ChooseServices extends Component {
                     <Icon name='md-close' style={{color:'crimson'}}/>
                   </TouchableOpacity>
                   <Text style={{fontSize: 16,textAlign:'right'}}>
-                    {/*item.show_sale === 'YES' ? item.sale_price : */item.price} руб.
+                    {item.show_sale === 'YES' ? item.sale_price : item.price} руб.
                   </Text>
                 </View>
 
@@ -186,7 +185,7 @@ class ChooseServices extends Component {
                     <Icon name='md-close' style={{color:'crimson'}}/>
                   </TouchableOpacity>
                   <Text style={{fontSize: 16,textAlign:'right'}}>
-                    {/*item.show_sale === 'YES' ? item.sale_price : */item.price} руб.
+                    {item.show_sale === 'YES' ? item.sale_price : item.price} руб.
                   </Text>
                 </View>
 
